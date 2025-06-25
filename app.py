@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, url_for, abort
 import sqlite3
 import os
@@ -78,38 +79,36 @@ def add():
 
     return render_template('add.html')
 
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    if request.method == 'POST':
+        if request.form.get('password') != app.config['PASSWORD']:
+            return 'Неверный пароль', 403
+
+        with sqlite3.connect(DB_NAME) as conn:
+            items = conn.execute('SELECT id, name, image_main FROM items ORDER BY id DESC').fetchall()
+
+        return render_template('admin.html', items=[{
+            'id': item[0],
+            'title': item[1],
+            'image': url_for('static', filename=item[2]) if item[2] else ''
+        } for item in items])
+
+    return '''
+    <h2>Вход в админку</h2>
+    <form method="post">
+        Пароль: <input type="password" name="password">
+        <input type="submit" value="Войти">
+    </form>
+    <p><a href="/">← Назад</a></p>
+    '''
+
+@app.route('/delete/<int:item_id>', methods=['POST'])
+def delete(item_id):
+    with sqlite3.connect(DB_NAME) as conn:
+        conn.execute('DELETE FROM items WHERE id = ?', (item_id,))
+    return redirect(url_for('admin'))
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)
-
-import os
-
-def init_db():
-    import sqlite3
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            description TEXT,
-            price TEXT,
-            material TEXT,
-            image_main TEXT,
-            image_extra TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-# Инициализировать БД при запуске
-if not os.path.exists('database.db'):
-    init_db()
-
-import sqlite3
-
-with sqlite3.connect('database.db') as conn:
-    conn.execute("ALTER TABLE items ADD COLUMN image_1 TEXT")
-    conn.execute("ALTER TABLE items ADD COLUMN image_2 TEXT")
-    conn.execute("ALTER TABLE items ADD COLUMN image_3 TEXT")
-
