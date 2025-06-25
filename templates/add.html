@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Добавить изделие{% endblock %}
+
+{% block content %}
+<div class="container text-white">
+    <h1 class="text-2xl font-bold mb-6">Добавление нового изделия</h1>
+    <form method="post">
+        <div class="mb-4">
+            <label class="block mb-1">Название:</label>
+            <input type="text" name="title" class="w-full p-2 bg-gray-800 rounded text-white" required>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1">Категория:</label>
+            <select name="category" class="w-full p-2 bg-gray-800 rounded text-white" required>
+                {% for cat in categories %}
+                <option value="{{ cat }}">{{ cat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1">Материал:</label>
+            <input type="text" name="material" class="w-full p-2 bg-gray-800 rounded text-white">
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1">Описание:</label>
+            <textarea name="description" class="w-full p-2 bg-gray-800 rounded text-white" rows="4"></textarea>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1">Главное изображение (имя файла):</label>
+            <input type="text" name="main_image" class="w-full p-2 bg-gray-800 rounded text-white" required>
+        </div>
+        <div class="mb-6">
+            <label class="block mb-1">Доп. изображения (через запятую):</label>
+            <input type="text" name="images" class="w-full p-2 bg-gray-800 rounded text-white">
+        </div>
+        <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">Добавить</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+<div class="container text-white">
+    <h1 class="text-3xl font-bold mb-4">{{ item.title }}</h1>
+    <p class="text-gray-400">Категория: {{ item.category }}</p>
+    <p class="text-gray-400">Материал: {{ item.material }}</p>
+    {% if item.description %}
+        <p class="mt-4 text-gray-300">{{ item.description }}</p>
+    {% endif %}
+
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <img src="{{ url_for('static', filename='uploads/' + item.main_image) }}" class="rounded-lg shadow">
+        {% for img in image_list %}
+            <img src="{{ url_for('static', filename='uploads/' + img.strip()) }}" class="rounded-lg shadow">
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
