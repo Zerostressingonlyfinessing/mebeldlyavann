@@ -106,3 +106,10 @@ def init_db():
 if not os.path.exists('database.db'):
     init_db()
 
+import sqlite3
+
+with sqlite3.connect('database.db') as conn:
+    conn.execute("ALTER TABLE items ADD COLUMN image_1 TEXT")
+    conn.execute("ALTER TABLE items ADD COLUMN image_2 TEXT")
+    conn.execute("ALTER TABLE items ADD COLUMN image_3 TEXT")
+
