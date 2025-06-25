@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ product[1] }}</h2>
+<p><strong>Материалы:</strong> {{ product[4] }}</p>
+<p>{{ product[2] }}</p>
+
+<div class="row">
+    {% for img in product[5].split(',') %}
+    <div class="col-md-4 mb-3">
+        <img src="{{ img }}" class="img-fluid rounded">
+    </div>
+    {% endfor %}
+</div>
+
+<a href="/" class="btn btn-secondary">Назад</a>
+{% endblock %}

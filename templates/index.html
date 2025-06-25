@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Наши работы</h1>
+
+<form method="get" class="mb-4">
+    <select name="category" onchange="this.form.submit()" class="form-select w-25">
+        <option value="">Все категории</option>
+        <option value="тумба">Тумба</option>
+        <option value="столешница">Столешница</option>
+        <option value="шкаф">Шкаф</option>
+        <option value="шкаф над инсталляцией">Шкаф над инсталляцией</option>
+        <option value="зеркальный шкаф">Зеркальный шкаф</option>
+        <option value="под стиральную машину">Под стиральную машину</option>
+    </select>
+</form>
+
+<div class="row">
+    {% for p in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ p[5].split(',')[0] }}" class="card-img-top" alt="{{ p[1] }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ p[1] }}</h5>
+                <a href="/product/{{ p[0] }}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
